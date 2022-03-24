@@ -32,7 +32,7 @@ bool nextMove(int **a, int *x, int *y, int size, unsigned long long &move)
         int i = (random + count) % 8;
         x1 = *x + cx1[i];
         y1 = *y + cy1[i];
-        move++;
+        // move++;
         if ((safeInterval(a, x1, y1, size)) && (c = validNeighbor(a, x1, y1, size)) < min_deg){
             min_deg_idx = i;
             min_deg = c;
@@ -43,6 +43,7 @@ bool nextMove(int **a, int *x, int *y, int size, unsigned long long &move)
     x1 = *x + cx1[min_deg_idx];
     y1 = *y + cy1[min_deg_idx];
     a[x1][y1] = a[*x][*y] + 1;
+    move++;
     *x = x1;
     *y = y1;
     return true;
@@ -87,7 +88,12 @@ void warnsdorffHeuristic(int x, int y, int size){
             a[i][j] = -1;
 
     srand(time(NULL));
+    int abc = 0;
     while (!findTour(a, x, y, size, move)){
+        if (abc == 8*size*size){
+            break;
+        }
+        abc++;
         for (int i = 0; i < size; ++i)
             for (int j = 0; j < size; j++)
                 a[i][j] = -1;
